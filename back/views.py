@@ -7,6 +7,7 @@ from back.serializers import UserSerializer, GroupSerializer, ArticleSerializer
 import requests
 from wechat.settings import wxloginapi
 import subprocess
+from rest_framework.permissions import IsAuthenticated
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -31,19 +32,30 @@ class ArticleViewSet(viewsets.ModelViewSet):
     """
     queryset = Article.objects.all()
     serializer_class = ArticleSerializer
+    permission_classes = (IsAuthenticated,)
 
 
-def login(data):
-    code = data.GET.get("code")
-    r = requests.post(wxloginapi, data={
-        'appid': 'wxc2856436ce115044',
-        'secret': '6107a784b9a3f2750feda6b82fcfbbec',
-        'js_code': code,
-        'grant_type': 'authorization_code',
-    }
-                      )
-    print(r.json())
-    return HttpResponse(r.text)
+def login(r):
+    print(r)
+    str = u'<h1>hello world</h1>'
+    return HttpResponse(str)
+    # if request.method == 'POST':
+    #     code = request.GET.get("code")
+    #     r = requests.post(wxloginapi, data={
+    #         'appid': 'wxc2856436ce115044',
+    #         'secret': '6107a784b9a3f2750feda6b82fcfbbec',
+    #         'js_code': code,
+    #         'grant_type': 'authorization_code',
+    #     }
+    #                       )
+    #     print(r.json())
+    #     return HttpResponse(r.text)
+    # if request.method == 'GET':
+    #     print('get')
+    #     str = '<h1>hello world</h1>'
+    #     return HttpResponse(str)
+    # else:
+    #     print("ee")
 
 
 # appid	string		ÊÇ	Ð¡³ÌÐò appId

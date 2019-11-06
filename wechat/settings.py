@@ -43,10 +43,11 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'middleware.disable_restapi_csrf.DisableCSRFCheck',
 ]
 
 ROOT_URLCONF = 'wechat.urls'
@@ -125,3 +126,28 @@ MEDIA_URL = "/media/"
 
 wxloginapi = "https://api.weixin.qq.com/sns/jscode2session?appid=APPID&secret=SECRET&js_code=JSCODE&grant_" \
              "type=authorization_code"
+
+# 全局认证
+from rest_framework.authentication import TokenAuthentication, BasicAuthentication, SessionAuthentication
+
+REST_FRAMEWORK = {
+    # 'DEFAULT_AUTHENTICATION_CLASSES': (
+    #     # 'rest_framework_jwt.authentication.JSONWebTokenAuthentication', # 全局认证，开源jwt
+    #     'rest_framework.authentication.BasicAuthentication',
+    #     'rest_framework.authentication.SessionAuthentication',
+    #     # 'rest_framework.authentication.TokenAuthentication', #全局认证drf 自带的
+    #
+    # ),
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        # 'rest_framework.authentication.BasicAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': (
+        # 'rest_framework.permissions.IsAuthenticated',
+    )
+}
+import datetime
+JWT_AUTH = {
+    # Token过期时间设置
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=600),
+}

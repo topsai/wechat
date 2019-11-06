@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 # from django.contrib import admin
-# from django.urls import path
+from django.urls import path
 #
 # urlpatterns = [
 #     path('admin/', admin.site.urls),
@@ -27,6 +27,11 @@ from back import views
 from wechat.settings import MEDIA_ROOT
 from django.views.static import serve
 
+# from rest_framework.authtoken import views
+# from rest_framework_jwt.views import obtain_jwt_token
+from rest_framework_simplejwt.views import token_obtain_pair
+from rest_framework_simplejwt import views as JWTAuthenticationViews
+
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
 router.register(r'groups', views.GroupViewSet)
@@ -36,7 +41,12 @@ router.register(r'article', views.ArticleViewSet)
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    path('login/', views.login),
     url('', include(router.urls)),
     url(r'^media/(?P<path>.*)$', serve, {"document_root": MEDIA_ROOT}),
-    url('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+    url('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    url(r'^jwt_auth/', token_obtain_pair),
+    path('api/token/', JWTAuthenticationViews.TokenObtainPairView.as_view(), name='get_token'),
+    path('api/token/refresh/', JWTAuthenticationViews.TokenRefreshView.as_view(), name='refresh_token'),
+
 ]

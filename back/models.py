@@ -1,9 +1,11 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from rest_framework.permissions import IsAuthenticated
 
 
 # Create your models here.
 class Article(models.Model):
+
     title = models.CharField(max_length=256)
     img = models.ImageField(upload_to='img')
     content = models.CharField(max_length=256)
