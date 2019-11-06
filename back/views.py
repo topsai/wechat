@@ -1,8 +1,9 @@
 # Create your views here.
 from django.shortcuts import render, HttpResponse
 from django.contrib.auth.models import User, Group
+from back.models import Article
 from rest_framework import viewsets
-from back.serializers import UserSerializer, GroupSerializer
+from back.serializers import UserSerializer, GroupSerializer, ArticleSerializer
 import requests
 from wechat.settings import wxloginapi
 import subprocess
@@ -24,6 +25,14 @@ class GroupViewSet(viewsets.ModelViewSet):
     serializer_class = GroupSerializer
 
 
+class ArticleViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows groups to be viewed or edited.
+    """
+    queryset = Article.objects.all()
+    serializer_class = ArticleSerializer
+
+
 def login(data):
     code = data.GET.get("code")
     r = requests.post(wxloginapi, data={
@@ -32,9 +41,11 @@ def login(data):
         'js_code': code,
         'grant_type': 'authorization_code',
     }
-    )
+                      )
     print(r.json())
     return HttpResponse(r.text)
+
+
 # appid	string		是	小程序 appId
 # secret	string		是	小程序 appSecret
 # js_code	string		是	登录时获取的 code

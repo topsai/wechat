@@ -24,15 +24,19 @@ from django.contrib import admin
 from django.conf.urls import include
 from rest_framework import routers
 from back import views
+from wechat.settings import MEDIA_ROOT
+from django.views.static import serve
 
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
 router.register(r'groups', views.GroupViewSet)
+router.register(r'article', views.ArticleViewSet)
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
-    # url(r'^admin/', admin.site.urls),
+    url(r'^admin/', admin.site.urls),
     url('', include(router.urls)),
+    url(r'^media/(?P<path>.*)$', serve, {"document_root": MEDIA_ROOT}),
     url('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]

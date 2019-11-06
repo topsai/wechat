@@ -4,13 +4,13 @@ from django.utils.translation import gettext_lazy as _
 
 # Create your models here.
 class Article(models.Model):
-    id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=100)
-    # 现价
-    min_price = models.SmallIntegerField()
-    # 原价
-    max_price = models.SmallIntegerField()
-    pic = models.CharField(max_length=256)
+    title = models.CharField(max_length=256)
+    img = models.ImageField(upload_to='img')
+    content = models.CharField(max_length=256)
+    introduction = models.CharField(max_length=256)
+    create_time = models.DateTimeField(auto_now=True)
+    money = models.IntegerField()
+    inventory = models.IntegerField()
 
     class Meta:
         verbose_name = _("car")
