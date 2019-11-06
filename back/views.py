@@ -48,6 +48,8 @@ def update(request):
         p = subprocess.Popen('. /Arduino/conf/update', shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         p.stdout.encoding = 'utf8'
         if p.stdout:
-            log.debug('更新成功', p.stdout.read())
+            # log.debug('更新成功', p.stdout.read())
+            pass
         else:
-            log.debug('更新失败', p.stderr.read())
+            pass
+            # log.debug('更新失败', p.stderr.read())
