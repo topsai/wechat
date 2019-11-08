@@ -5,7 +5,6 @@ from rest_framework.permissions import IsAuthenticated
 
 # Create your models here.
 class Article(models.Model):
-
     title = models.CharField(max_length=256)
     img = models.ImageField(upload_to='img')
     content = models.CharField(max_length=256)
@@ -34,3 +33,17 @@ class OrderInfo(models.Model):
         pass
         # verbose_name = '订单详情'
         # verbose_name_plural = '订单详情'
+
+
+from django.contrib.auth.models import AbstractUser
+
+
+# 扩展用户模型
+class User(AbstractUser):
+    # 微信官方数据
+    nickname = models.CharField(max_length=32)
+    session_key = models.CharField(max_length=32)
+    openid = models.CharField(max_length=32)
+    unionid = models.CharField(max_length=32)
+    # 自定义session
+    session = models.CharField(max_length=256)

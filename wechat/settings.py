@@ -147,7 +147,10 @@ REST_FRAMEWORK = {
     )
 }
 import datetime
+
 JWT_AUTH = {
     # Token过期时间设置
     'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=600),
 }
+
+AUTH_USER_MODEL = "back.User"
